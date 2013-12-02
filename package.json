@@ -1,6 +1,6 @@
 {
   "name": "control.async",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "Operations for asynchronous control flow.",
   "main": "lib/index.js",
   "scripts": {
@@ -20,7 +20,9 @@
   "bugs": {
     "url": "https://github.com/folktale/control.async/issues"
   },
-  "dependencies": {},
+  "dependencies": {
+    "monads.future": "~0.1.0"
+  },
   "devDependencies": {
     "browserify": "~2.35.4",
     "groc": "git://github.com/killdream/groc#patch-livescript",
