@@ -24,3 +24,15 @@
  */
 
 # Operations for asynchronous control flow.
+
+Future = require 'monads.future'
+
+
+# # Function: delay
+#
+# Returns a promise that gets resolved after X seconds
+#  
+# + type: Int -> Future(a,Int)
+export delay = (n) -> new Future (reject, resolve) -> do
+                                                      s = new Date
+                                                      set-timeout (-> resolve (new Date - s)), n * 1000
