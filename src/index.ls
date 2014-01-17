@@ -1,7 +1,7 @@
 # # control.async
 
 /** ^
- * Copyright (c) 2013 Quildreen Motta
+ * Copyright (c) 2013-2014 Quildreen Motta
  *
  * Permission is hereby granted, free of charge, to any person
  * obtaining a copy of this software and associated documentation files
@@ -25,14 +25,69 @@
 
 # Operations for asynchronous control flow.
 
-Future = require 'monads.future'
+Future = require 'data.future'
+flaw   = require 'flaw'
+
+TimeoutError = (n) -> flaw 'TimeoutError', "Timeoutted after #n milliseconds."
 
 
 # # Function: delay
 #
-# Returns a promise that gets resolved after X seconds
+# Returns a promise that gets resolved after X milliseconds
 #  
-# + type: Int -> Future(a,Int)
-export delay = (n) -> new Future (reject, resolve) -> do
-                                                      s = new Date
-                                                      set-timeout (-> resolve (new Date - s)), n * 1000
+# + type: Int -> Future(a, Int)
+export delay = (n) -> new Future (reject, resolve) !->
+  s = new Date
+  set-timeout (-> resolve (new Date - s)), n
+
+
+# # Function: timeout
+#
+# Returns a promise that fails after X milliseconds
+#
+# + type: Int -> Future(Error, a)
+export timeout = (n) -> new Future (reject, resolve) !->
+  s = new Date
+  set-timeout (-> reject (TimeoutError n)), n
+
+
+# # Function: parallel
+#
+# Resolves all futures in parallel.
+#
+# + type: [Future(a, b)] -> Future(a, [b])
+export parallel = (xs) -> new Future (reject, resolve) !->
+  len      = xs.length
+  result   = new Array len
+  resolved = false
+
+  for x,i in xs => compute x, i
+
+  function compute(x, i) => x.fork do
+                                   * (e) -> do
+                                            if resolved => return
+                                            resolved := true
+                                            reject e
+                                   * (v) -> do
+                                            if resolved => return
+                                            result[i] := v
+                                            len       := len - 1
+                                            if len is 0 => do
+                                                           resolved := true
+                                                           resolve result
+
+  
+# # Function: nondeterministic-choice
+#
+# Returns the value of the first resolved or rejected future.
+#
+# + type: [Future(a, b)] -> Future(a, b)
+export nondeterministic-choice = (xs) -> new Future (reject, resolve) !->
+  resolved = false
+  for x,i in xs => x.fork do
+                          * (e) -> transition reject, e
+                          * (v) -> transition resolve, v
+
+  function transition(f, a) => if not resolved
+    resolved := true
+    f a

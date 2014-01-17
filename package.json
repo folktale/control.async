@@ -21,15 +21,17 @@
     "url": "https://github.com/folktale/control.async/issues"
   },
   "dependencies": {
-    "monads.future": "~0.1.0"
+    "flaw": "~0.1.0",
+    "data.future": "~2.0.0"
   },
   "devDependencies": {
-    "browserify": "~2.35.4",
-    "groc": "git://github.com/killdream/groc#patch-livescript",
+    "browserify": "git://github.com/robotlolita/node-browserify",
+    "groc": "git://github.com/robotlolita/groc",
     "LiveScript": "~1.2.0",
     "hifive-tap": "~0.1.0",
     "hifive": "~0.1.0",
     "uglify-js": "~2.4.3",
-    "laws": "~0.2.0"
+    "laws": "~0.2.0",
+    "claire": "~0.4.1"
   }
 }
