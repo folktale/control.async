@@ -1,6 +1,6 @@
 {
   "name": "control.async",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Operations for asynchronous control flow.",
   "main": "lib/index.js",
   "scripts": {
@@ -22,7 +22,7 @@
   },
   "dependencies": {
     "flaw": "~0.1.0",
-    "data.future": "~2.0.0"
+    "data.future": "^2.0.0"
   },
   "devDependencies": {
     "browserify": "git://github.com/robotlolita/node-browserify",
