@@ -1,52 +1,69 @@
 bin        = $(shell npm bin)
-lsc        = $(bin)/lsc
+sjs        = $(bin)/sjs
 browserify = $(bin)/browserify
-groc       = $(bin)/groc
+jsdoc      = $(bin)/jsdoc
 uglify     = $(bin)/uglifyjs
 VERSION    = $(shell node -e 'console.log(require("./package.json").version)')
 
+# -- Configuration -----------------------------------------------------
+PACKGE   = control.async
+EXPORTS  = folktale.control.async
 
-lib: src/*.ls
-	$(lsc) -o lib -c src/*.ls
+LIB_DIR  = lib
 
+TEST_DIR = test/specs-src
+TEST_BLD = test/specs
+TEST_SRC = $(wildcard $(TEST_DIR)/*.sjs)
+TEST_TGT = ${TEST_SRC:$(TEST_DIR)/%.sjs=$(TEST_BLD)/%.js}
+
+
+# -- Compilation -------------------------------------------------------
 dist:
-	mkdir -p dist
+	mkdir -p $@
 
-dist/control.async.umd.js: compile dist
-	$(browserify) lib/index.js --standalone Async > $@
+dist/$(PACKAGE).umd.js: $(LIB_DIR)/index.js dist
+	$(browserify) $< --standalone $(EXPORTS) > $@
 
-dist/control.async.umd.min.js: dist/control.async.umd.js
-	$(uglify) --mangle - < $^ > $@
+dist/$(PACKAGE).umd.min.js: dist/$(PACKAGE).umd.js
+	$(uglify) --mangle - < $< > $@
 
-# ----------------------------------------------------------------------
-bundle: dist/control.async.umd.js
+$(TEST_BLD)/%.js: $(TEST_DIR)/%.sjs
+	mkdir -p $(dir $@)
+	$(sjs) --readable-names        \
+	       --module alright/macros \
+	       --output $@             \
+	       $<
 
-minify: dist/control.async.umd.min.js
 
-compile: lib
+# -- Tasks -------------------------------------------------------------
+bundle: dist/$(PACKAGE).umd.js
+
+minify: dist/$(PACKAGE).umd.min.js
 
 documentation:
-	$(groc) --index "README.md"                                              \
-	        --out "docs/literate"                                            \
-	        src/*.ls test/*.ls test/specs/**.ls README.md
+	$(jsdoc) --configure jsdoc.conf.json
+	ABSPATH=$(shell cd "$(dirname "$0")"; pwd) $(MAKE) clean-docs
+
+clean-docs:
+	perl -pi -e "s?$$ABSPATH/??g" ./docs/*.html
 
 clean:
-	rm -rf dist build lib
+	rm -rf dist $(TEST_BLD)
 
-test:
-	$(lsc) test/tap.ls
+test: $(TEST_TGT)
+	node test/node.js
 
-package: compile documentation bundle minify
-	mkdir -p dist/control.async-$(VERSION)
-	cp -r docs/literate dist/control.async-$(VERSION)/docs
-	cp -r lib dist/control.async-$(VERSION)
-	cp dist/*.js dist/control.async-$(VERSION)
-	cp package.json dist/control.async-$(VERSION)
-	cp README.md dist/control.async-$(VERSION)
-	cp LICENCE dist/control.async-$(VERSION)
-	cd dist && tar -czf control.async-$(VERSION).tar.gz control.async-$(VERSION)
+package: documentation bundle minify
+	mkdir -p dist/$(PACKAGE)-$(VERSION)
+	cp -r docs dist/$(PACKAGE)-$(VERSION)
+	cp -r lib dist/$(PACKAGE)-$(VERSION)
+	cp dist/*.js dist/$(PACKAGE)-$(VERSION)
+	cp package.json dist/$(PACKAGE)-$(VERSION)
+	cp README.md dist/$(PACKAGE)-$(VERSION)
+	cp LICENCE dist/$(PACKAGE)-$(VERSION)
+	cd dist && tar -czf $(PACKAGE)-$(VERSION).tar.gz $(PACKAGE)-$(VERSION)
 
-publish: clean
+publish: clean $(TGT)
 	npm install
 	npm publish
 
@@ -59,5 +76,4 @@ bump-feature:
 bump-major:
 	VERSION_BUMP=MAJOR $(MAKE) bump
 
-
-.PHONY: test
+.PHONY: test bump bump-feature bump-major publish package clean documentation
