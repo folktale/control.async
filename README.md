@@ -13,7 +13,23 @@ Operations for asynchronous control flow.
 ## Example
 
 ```js
-( ... )
+var fs    = require('fs')
+var async = require('control.async')
+
+var read = async.liftNode(fs.readFile)
+
+var files = async.parallel( read('foo.txt', 'utf-8')
+                          , read('bar.txt', 'utf-8')
+                          , read('baz.txt', 'utf-8'))
+
+var concatenated = files.chain(function(xs){ return xs.join('') })
+
+// Futures are pure, so you need to actually run the action to get
+// the effects.
+concatenated.fork(
+  function(error){ throw error }
+, function(value){ console.log(value) }
+)
 ```
 
 
@@ -75,12 +91,12 @@ any JavaScript environment.
 
 You can [read the documentation online][docs] or build it yourself:
 
-    $ git clone git://github.com/folktale/monads.maybe.git
-    $ cd monads.maybe
+    $ git clone git://github.com/folktale/control.async.git
+    $ cd control.async
     $ npm install
     $ make documentation
 
-Then open the file `docs/literate/index.html` in your browser.
+Then open the file `docs/index.html` in your browser.
 
 
 ## Platform support
