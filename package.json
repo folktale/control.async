@@ -1,6 +1,6 @@
 {
   "name": "control.async",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "Operations for asynchronous control flow.",
   "main": "lib/index.js",
   "scripts": {
@@ -23,14 +23,14 @@
     "url": "https://github.com/folktale/control.async/issues"
   },
   "dependencies": {
-    "browserify": "^4.1.2",
     "core.lambda": "^1.0.0",
     "data.future": "^2.0.0",
     "flaw": "~0.1.0",
-    "jsdoc": "^3.3.0-alpha5",
     "xtend": "^3.0.0"
   },
   "devDependencies": {
+    "jsdoc": "^3.3.0-alpha5",
+    "browserify": "^4.1.2",
     "hifive": "~0.1.0",
     "uglify-js": "~2.4.3",
     "hifive-spec": "^0.1.1",
