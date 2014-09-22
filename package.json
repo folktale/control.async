@@ -24,11 +24,11 @@
   },
   "dependencies": {
     "core.lambda": "^1.0.0",
-    "data.future": "^2.0.0",
     "flaw": "~0.1.0",
     "xtend": "^3.0.0"
   },
   "devDependencies": {
+    "data.future": "^2.0.0",
     "jsdoc": "^3.3.0-alpha5",
     "browserify": "^4.1.2",
     "hifive": "~0.1.0",
