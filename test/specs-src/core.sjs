@@ -26,10 +26,5 @@ var async   = require('../../')
 
 module.exports = spec('Async/Core', function(it, spec) {
 
-  spec('fail()', function(it) {
-    it('Should always fail.', function() {
-      
-    })
-  })
 
 })
