@@ -1,6 +1,6 @@
 {
   "name": "control.async",
-  "version": "0.3.1",
+  "version": "0.4.0",
   "description": "Operations for asynchronous control flow.",
   "main": "lib/index.js",
   "scripts": {
