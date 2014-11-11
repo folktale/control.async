@@ -6,7 +6,7 @@ uglify     = $(bin)/uglifyjs
 VERSION    = $(shell node -e 'console.log(require("./package.json").version)')
 
 # -- Configuration -----------------------------------------------------
-PACKGE   = control.async
+PACKAGE   = control.async
 EXPORTS  = folktale.control.async
 
 LIB_DIR  = lib
