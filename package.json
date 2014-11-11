@@ -1,6 +1,6 @@
 {
   "name": "control.async",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "description": "Operations for asynchronous control flow.",
   "main": "lib/index.js",
   "scripts": {
@@ -23,9 +23,10 @@
     "url": "https://github.com/folktale/control.async/issues"
   },
   "dependencies": {
-    "core.lambda": "^1.0.0",
+    "core.lambda": "~1.0.0",
     "flaw": "~0.1.0",
-    "xtend": "^3.0.0"
+    "xtend": "^3.0.0",
+    "data.maybe": "~1.1.0"
   },
   "devDependencies": {
     "data.future": "^2.0.0",
