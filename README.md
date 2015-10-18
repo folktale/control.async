@@ -18,9 +18,9 @@ var async = require('control.async')
 
 var read = async.liftNode(fs.readFile)
 
-var files = async.parallel( read('foo.txt', 'utf-8')
+var files = async.parallel([ read('foo.txt', 'utf-8')
                           , read('bar.txt', 'utf-8')
-                          , read('baz.txt', 'utf-8'))
+                          , read('baz.txt', 'utf-8')])
 
 var concatenated = files.chain(function(xs){ return xs.join('') })
 
