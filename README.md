@@ -114,9 +114,9 @@ Released under the [MIT licence](https://github.com/folktale/control.async/blob/
 <!-- links -->
 [Fantasy Land]: https://github.com/fantasyland/fantasy-land
 [Browserify]: http://browserify.org/
-[release]: https://github.com/folktale/control.async/releases/download/v0.0.0/control.async-0.0.0.tar.gz
+[release]: https://github.com/folktale/control.async/archive/master.zip
 [Git]: http://git-scm.com/
 [Make]: http://www.gnu.org/software/make/
 [Node.js]: http://nodejs.org/
 [es5-shim]: https://github.com/kriskowal/es5-shim
-[docs]: http://folktale.github.io/control.async
+[docs]: http://folktalegithubio.readthedocs.io/en/latest/api/control/async/index.html
